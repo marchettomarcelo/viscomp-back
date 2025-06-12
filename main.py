@@ -45,7 +45,7 @@ async def health_check():
 
 @app.post("/process-image")
 async def process_image(
-    image: UploadFile = File(...),
+    file: UploadFile = File(...),
     text: str = Form(...),
 ):
     """
@@ -60,7 +60,8 @@ async def process_image(
             detail=f"Invalid text value. Must be one of: {', '.join([e.value for e in AllowedText])}"
         )
     # Read the uploaded image
-    image_content = await image.read()
+    image_content = await file.read()
+
     try:
         uploaded_image = Image.open(BytesIO(image_content)).convert("RGB")
     except Exception:
@@ -88,7 +89,7 @@ async def process_image(
     similarity = calculate_cosine_similarity(vec1, vec2)
 
     return {
-        "filename": image.filename,
+        "filename": file.filename,
         "text": validated_text.value,
         "cosine_similarity": similarity
     }
