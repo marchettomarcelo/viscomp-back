@@ -27,15 +27,13 @@ app = FastAPI(
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with specific origins
+    allow_origins=["draw-compare-score-play-production.up.railway.app"],  # In production, replace with specific origins
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # Load model and processor once at startup
-
-
 vit_processor, vit_model = get_vit_model_and_processor()
 
 @app.get("/health")
